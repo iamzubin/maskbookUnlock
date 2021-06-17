@@ -1,24 +1,19 @@
-import {Router, Response} from "express"
+import { Request , Response ,NextFunction } from "express";
+import verifySignature from "../helpers/ethereumFunctions";
 
-const router: Router = Router()
-
-router.get('/', function (req, res, next) {
-    // res.status(404)
-
-    // Put server logic here
-
-    next()
-  })
   
+export const checkEthSignature = (req : Request, res : Response, next : NextFunction) => {
+    const data = req.body
+    try {
+        if (verifySignature(data)){
+            next()
+        } else {
+            res.send("wrong signature")
+        }
+    } catch (error) {
+        console.log(error)
+        res.send(" " + error)
+    }
+    // res.send(address)
+}
 
-export default router;
-
-// const requireSomething = () =>  {
-//     return (req, res, next) => {
-//         res.status(404).send("server error here baby")
-//         res.end("something")
-//     }
-// }
-
-
-// export default requireSomething

@@ -12,23 +12,29 @@ import {hashPersonalMessage,fromRpcSig, ecrecover, ECDSASignature, publicToAddre
 
 
 function verifySignature (signedMessage : {[key: string]: string}) : boolean {
+    if(signedMessage.address && signedMessage.msg && signedMessage.sig){
 
-    var msgBuffer : Buffer = Buffer.from(signedMessage.msg)
-    var msgHash : Buffer = hashPersonalMessage(msgBuffer)
-    var signatureParams : ECDSASignature = fromRpcSig(signedMessage.sig)
-    var publicKey : Buffer = ecrecover(
-        msgHash,
-        signatureParams.v,
-        signatureParams.r,
-        signatureParams.s
-        );
-    const addressBuffer : Buffer= publicToAddress(publicKey);
-    const address : string = bufferToHex(addressBuffer);
-    if (signedMessage.address == address){
-        return true
-    } else {
-        return false
-    }  
+        var msgBuffer : Buffer = Buffer.from(signedMessage.msg)
+        var msgHash : Buffer = hashPersonalMessage(msgBuffer)
+        var signatureParams : ECDSASignature = fromRpcSig(signedMessage.sig)
+        var publicKey : Buffer = ecrecover(
+            msgHash,
+            signatureParams.v,
+            signatureParams.r,
+            signatureParams.s
+            );
+            const addressBuffer : Buffer= publicToAddress(publicKey);
+            const address : string = bufferToHex(addressBuffer);
+            if (signedMessage.address == address){
+                return true
+            } else {
+                return false
+            }  
+            
+        } else {
+            throw new Error("Missing Parameters for signature verification");
+            
+        }
 }
         
 export default verifySignature;
