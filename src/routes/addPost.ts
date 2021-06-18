@@ -1,10 +1,10 @@
 import {Router, Response} from "express"
+import { addPostController } from "../controller/postManagement";
 
 const router: Router = Router()
 
-router.get('/', function (req, res) {
-    res.send('hello add post')
-  })
+router.post('/', addPostController)
+
   
 
 export default router;

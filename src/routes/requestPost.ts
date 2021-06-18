@@ -1,10 +1,16 @@
 import {Router, Response} from "express"
 
+import { verifyActiveLock } from "../controller/unlockProtocol";
+import { requestPostController } from "../controller/postManagement";
+
+
 const router: Router = Router()
 
-router.get('/', function (req, res) {
-    res.send('hello world')
-  })
+
+router.use(verifyActiveLock)
+
+
+router.get('/', requestPostController)
   
 
 export default router;

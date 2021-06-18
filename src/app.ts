@@ -27,7 +27,6 @@ app.use((error, req, res, next) => {
 // app.use(requireSomething)
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(checkEthSignature)
 
 
 app.use("/request",requestPost )

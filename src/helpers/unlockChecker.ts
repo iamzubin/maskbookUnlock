@@ -14,20 +14,25 @@ const graphQLClient = new GraphQLClient(endpoint)
 // export const verifyHolder = async  (_holder: String) => {
 export const verifyHolder = async  (_lockAddress: String, _holder: String) => {
     const query = gql`
-    query keyPurchase ($purchaser : String!, $lock : String!){
-    
-            keyPurchases(where: {purchaser : $purchaser, lock : $lock}) {
-                lock
-        }
-    }
+    query keyHolders ($address : String!){
+            keyHolders (where : {address : $address}){
+              keys{
+                expiration
+                keyId
+                lock{
+                  address
+                }
+              }
+            }
           
+    }
+    
     `
     const variables = {
-        purchaser: _holder,
-        lock : _lockAddress
+        address : _holder
     }
     const data = await graphQLClient.request(query, variables)
-    return data.keyPurchases
+    return data.keyHolders
 }
 
 
