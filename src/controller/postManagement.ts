@@ -8,13 +8,23 @@ export const addPostController = (req : Request, res: Response) => {
         const {identifier, unlockLocks, unlockKey } = data.post
         const post = Post.build({identifier, unlockLocks, unlockKey})
         post.save()
-        res.send("success")
+        res.json({message :"success"})
     }
 }
 
 export const requestPostController = (req : Request, res : Response) => {
     var data = req.body
-    Post.find({identifier : data.post.identifier}).then((result)=>{
-        res.send(result)
+    Post.findOne({identifier : data.post.identifier}).then((result)=>{
+        if(result){
+            var postData = {}
+            result.unlockLocks.forEach(element => {
+                if(element == data.lock){
+                    postData = result.toJSON
+                }
+            });
+            res.json({post : postData})
+        } else {
+            res.status(404).json({message : "post does not exist"})
+        }
     })
 }
