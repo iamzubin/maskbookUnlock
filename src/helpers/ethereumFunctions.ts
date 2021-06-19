@@ -10,6 +10,12 @@ import {hashPersonalMessage,fromRpcSig, ecrecover, ECDSASignature, publicToAddre
  *    }
  */
 
+/**
+ * Function to Verify if the given messege @param signedMessage.msg is signed by the address @param address
+ * @param signedMessage Entry Containing msg, address and signature
+ * @returns 
+ */
+
 
 function verifySignature (signedMessage : {[key: string]: string}) : boolean {
     if(signedMessage.address && signedMessage.msg && signedMessage.sig){

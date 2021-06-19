@@ -37,7 +37,7 @@ export const verifyHolder = async  (_lockAddress: String, _holder: String) => {
 
 
 /**
- * 
+ * Fetch list of all the unlock tokens an account hold
  * @param _address1 address of the ETH account holding unlock nfts
  * @returns lisi of all the unlock locks held by the eth account
  */
