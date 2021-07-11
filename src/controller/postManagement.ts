@@ -4,8 +4,8 @@ import { Post } from "../models/posts";
 
 export const addPostController = (req : Request, res: Response) => {
     var data = req.body
-    if(!!data.post){
-        const {identifier, unlockLocks, unlockKey } = data.post
+    if(!!data){
+        const {identifier, unlockLocks, unlockKey } = data
         const post = Post.build({identifier, unlockLocks, unlockKey})
         post.save()
         res.json({message :"success"})
@@ -14,15 +14,11 @@ export const addPostController = (req : Request, res: Response) => {
 
 export const requestPostController = (req : Request, res : Response) => {
     var data = req.body
-    Post.findOne({identifier : data.post.identifier}).then((result)=>{
+    console.log(JSON.stringify(req.body))
+    Post.findOne({identifier : data.identifier}).then((result)=>{
         if(result){
             var postData = {}
-            result.unlockLocks.forEach(element => {
-                if(element == data.lock){
-                    postData = result.toJSON
-                }
-            });
-            res.json({post : postData})
+            res.json({post : result})
         } else {
             res.status(404).json({message : "post does not exist"})
         }

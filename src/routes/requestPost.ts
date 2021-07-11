@@ -6,11 +6,11 @@ import { requestPostController } from "../controller/postManagement";
 
 const router: Router = Router()
 
-router.use(checkEthSignatureMiddleware)
-router.use(verifyActiveLock)
+// router.use(checkEthSignatureMiddleware)
+// router.use(verifyActiveLock)
 
 
-router.get('/', requestPostController)
+router.post('/', requestPostController)
   
 
 export default router;

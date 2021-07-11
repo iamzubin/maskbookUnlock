@@ -6,7 +6,7 @@ import requestPost from "./routes/requestPost";
 import  addPost from "./routes/addPost";
 import { errorHandler } from './controller/middleware';
 
-
+import cors from "cors"
 
 connectDB();
 
@@ -15,7 +15,7 @@ const app = express();
 
 app.use(express.urlencoded());
 app.use(express.json());
-
+app.use(cors())
 
 app.use("/request",requestPost )
 app.use("/add",addPost )

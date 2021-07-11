@@ -35,7 +35,7 @@ export const verifyActiveLock = (req : Request, res: Response, next : NextFuncti
     const data =req.body
     if(data.lock && data.address){
         
-        verifyHolder(data.lock, data.address).then((result)=>{
+        verifyHolder(data.lock, data.address,data.chain).then((result)=>{
             var keys = result[0].keys
             keys.forEach(key => {
                 if(key.lock.address == data.lock){

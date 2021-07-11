@@ -1,7 +1,21 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
-const endpoint = 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby'
-const graphQLClient = new GraphQLClient(endpoint)
+const endpoint = {
+
+    4 : 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
+    1 : 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby'
+    
+}
+
+var graphQLClients = {}
+
+for(const [key, url] of Object.entries(endpoint)){
+    graphQLClients[key] = new GraphQLClient(url)
+}
+
+
+
+
 
 /**
  * this function will verify if the eth account actually holds the unlock protocol NFT
@@ -12,7 +26,7 @@ const graphQLClient = new GraphQLClient(endpoint)
 
 
 // export const verifyHolder = async  (_holder: String) => {
-export const verifyHolder = async  (_lockAddress: String, _holder: String) => {
+export const verifyHolder = async  (_lockAddress: String, _holder: String, _chain:number) => {
     const query = gql`
     query keyHolders ($address : String!){
             keyHolders (where : {address : $address}){
@@ -31,7 +45,7 @@ export const verifyHolder = async  (_lockAddress: String, _holder: String) => {
     const variables = {
         address : _holder
     }
-    const data = await graphQLClient.request(query, variables)
+    const data = await graphQLClients[_chain].request(query, variables)
     return data.keyHolders
 }
 
@@ -42,25 +56,25 @@ export const verifyHolder = async  (_lockAddress: String, _holder: String) => {
  * @returns lisi of all the unlock locks held by the eth account
  */
 
-export const getLocks = async (_address1: String) => {
-    const query = gql`
-        query lockManager($address: String!) {
-            lockManagers(where: { address: $address }) {
-                lock {
-                    name
-                    price
-                    address
-                    expirationDuration
-                }
-            }
-        }
-    `
-    const variables = {
-        address: _address1,
-    }
-    const data = await graphQLClient.request(query, variables)
-    return data.lockManagers
-}
+// export const getLocks = async (_address1: String) => {
+//     const query = gql`
+//         query lockManager($address: String!) {
+//             lockManagers(where: { address: $address }) {
+//                 lock {
+//                     name
+//                     price
+//                     address
+//                     expirationDuration
+//                 }
+//             }
+//         }
+//     `
+//     const variables = {
+//         address: _address1,
+//     }
+//     const data = await graphQLClient.request(query, variables)
+//     return data.lockManagers
+// }
 
 // export func as func
 
