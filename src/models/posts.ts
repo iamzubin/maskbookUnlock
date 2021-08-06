@@ -8,21 +8,10 @@ interface IPost {
   }],
   unlockKey : String
 }
-interface postModelInterface extends mongoose.Model<PostDoc>{
-  build(attr : IPost) : PostDoc
-}
-
-interface PostDoc extends mongoose.Document {
-  identifier : String,
-  unlockLocks : [{
-    chainid : Number,
-    unlocklock: String
-  }],
-  unlockKey : String
-}
 
 
-const postSchema = new mongoose.Schema({
+
+const postSchema = new mongoose.Schema<IPost>({
   identifier : {
     type : String,
     required : true
@@ -40,14 +29,10 @@ const postSchema = new mongoose.Schema({
   }
 })
 
-postSchema.statics.build = (attr : IPost) => {
-  return new Post(attr)
-}
 
+const Post = mongoose.model<IPost>('Posts', postSchema)
 
-const Post = mongoose.model<PostDoc, postModelInterface>('Posts', postSchema)
-
-Post.build({
+Post.create({
   identifier: "test",
   unlockLocks: [{
     chainid : 4,

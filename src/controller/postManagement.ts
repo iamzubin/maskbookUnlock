@@ -6,8 +6,7 @@ export const addPostController = (req : Request, res: Response) => {
     var data = req.body
     if(!!data){
         const {identifier, unlockLocks, unlockKey } = data
-        const post = Post.build({identifier, unlockLocks, unlockKey})
-        post.save()
+        Post.create({identifier, unlockLocks, unlockKey})
         res.json({message :"success"})
     }
 }
