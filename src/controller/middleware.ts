@@ -1,6 +1,6 @@
 import { Request , Response ,NextFunction } from "express";
 import verifySignature from "../helpers/ethereumFunctions";
-import { verifyHolder } from "../helpers/unlockChecker";
+import { verifyHolder, verifyOwner } from "../helpers/unlockChecker";
 
 
 export const errorHandler = (err, req,res,next )=>{
@@ -34,7 +34,6 @@ export const checkEthSignatureMiddleware = (req : Request, res : Response, next 
 export const verifyActiveLock = (req : Request, res: Response, next : NextFunction) => {
     const data =req.body
     if(data.lock && data.address){
-        
         verifyHolder(data.lock, data.address,data.chain).then((result)=>{
             var keys = result[0].keys
             keys.forEach(key => {
@@ -48,6 +47,11 @@ export const verifyActiveLock = (req : Request, res: Response, next : NextFuncti
                     }
                 }
             });
+            verifyOwner(data.lock, data.address,data.chain).then((result) => {
+                if(result){
+                    next()
+                }
+            })
             res.status(401).json({message: "Cannot find key on chain"})
         })
     } else {

@@ -12,10 +12,29 @@ var graphQLClients = {}
 for(const [key, url] of Object.entries(endpoint)){
     graphQLClients[key] = new GraphQLClient(url)
 }
+/**
+ * this function will verify if the eth account owns the unlock protocol NFT
+ * @param _lockAddress address of the unlock protocol lock
+ * @param _holder account of the holder needed to be verified
+ * @returns boolean
+ */
 
+  export const verifyOwner = async (_lockAddress : String, _useraddress : String, _lockChain : number) => {
+    const query = gql`query locks ($address: String!){
+        locks (where : {address : $address}) {
+          owner
+        }
+      }`
+      const variables = {
+          address : _lockAddress
+      }
 
-
-
+      const data = await graphQLClients[_lockChain].request(query, variables)
+      if ((data.locks[0].owner) == _useraddress.toLowerCase()){
+        return true
+      }
+      return false
+  }
 
 /**
  * this function will verify if the eth account actually holds the unlock protocol NFT
@@ -25,7 +44,6 @@ for(const [key, url] of Object.entries(endpoint)){
  */
 
 
-// export const verifyHolder = async  (_holder: String) => {
 export const verifyHolder = async  (_lockAddress: String, _holder: String, _chain:number) => {
     const query = gql`
     query keyHolders ($address : String!){
