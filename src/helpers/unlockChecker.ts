@@ -1,10 +1,10 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
 const endpoint = {
-
-    4 : 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
-    1 : 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby'
-    
+  1: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
+  4: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
+  100: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
+  137: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
 }
 
 var graphQLClients = {}
