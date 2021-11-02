@@ -14,7 +14,9 @@ interface IPost {
 const postSchema = new mongoose.Schema<IPost>({
   identifier : {
     type : String,
-    required : true
+    required : true,
+    unique : true
+
   },
   unlockLocks : {
     type : [{
@@ -32,14 +34,6 @@ const postSchema = new mongoose.Schema<IPost>({
 
 const Post = mongoose.model<IPost>('Posts', postSchema)
 
-Post.create({
-  identifier: "test",
-  unlockLocks: [{
-    chainid : 4,
-    unlocklock : ""
-  }],
-  unlockKey: "text",
 
-})
 
 export {Post}
